@@ -4,3 +4,4 @@ This repository contains content that pertains to Programming Assignment 4 of EC
 
 ## History 
 - September 13, 2026 - Created README.md File
+- September 16, 2026 - Uploaded PA4 Solutions
