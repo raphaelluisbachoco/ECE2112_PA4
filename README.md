@@ -84,7 +84,7 @@ board2
 First we call on the original data.
 ```python
 track = board2.pivot_table(index='Track', values='average').reset_index()
-gender = board2.c(index='Gender', values='average').reset_index()
+gender = board2.pivot_table(index='Gender', values='average').reset_index()
 hometown = board2.pivot_table(index='Hometown', values='average').reset_index()
 ```
 To assign the new data to the graph, we must first use `[name].pivot_table` of which we assign the indexes to the average column generated before. To reset the index we can also use `.reset_index()` so that the new index will start at 0
