@@ -1,4 +1,4 @@
-# ECE-2112-PA-3
+# ECE-2112-PA-4
 
 Created by: Raphael Luis L. Bachoco | 2ECE-D
 
@@ -31,7 +31,7 @@ VisComm = board2.loc[(board2['Hometown'] == 'Visayas') & (board2['Track'] == 'Co
 ```
 To narrow down the data to only people with the hometown of Visayas and is in the track of Communication we can use `.loc` on both while narrowing it down to `Name`, `Gender`, `Math`, `Electronics`, `average`.
 
-Problem A : Visayas Communicataion Dataframe
+Problem A: Visayas Communicataion Dataframe
 ```python
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -53,22 +53,21 @@ First we call the original data again.
 
 ```python
 BeforeavgVisFemale = board2.loc[(board2['Hometown'] == 'Visayas') & (board2['Gender'] == 'Female'), ['Name', 'Track', 'Math', 'Electronics', 'average']]
-BeforeavgVisFemale
+
 ```
 To narrow down the data to needed requirements we can use `.loc` on `board2` of which the hometown must be in `Visayas`. Their gender must be `Female` and only display `Name`, `Track`, `Math`, `Electronics` and their `average`.
 ```python
 VisFemale = BeforeavgVisFemale.loc[(board2['average'] >= 60)]
-VisFemale
+
 ```
-For the final requirement of which their average must be above 60, we can use
+For the final requirement of which their average must be above 60, we can use `.loc` again and use a `>=` operand to only select the averages above 60.
+
+Problem B: Visayas Female Dataframe Function:
 ```python
-
+board2
+BeforeavgVisFemale = board2.loc[(board2['Hometown'] == 'Visayas') & (board2['Gender'] == 'Female'), ['Name', 'Track', 'Math', 'Electronics', 'average']]
+VisFemale = BeforeavgVisFemale.loc[(board2['average'] >= 60)]
 ```
-
-
-
-
-
 
 ## CATEGORY-AVERAGE VISUALIZATION
 > Examine how the recorded Average differs across the three categorical features Track, Gender, and Hometown.
@@ -79,13 +78,76 @@ Hometown.
 d. Below the figure, write three concise statements identifying the category with the highest sample
 mean for each feature.
 
+```python
+board2
+```
+First we call on the original data.
+```python
+track = board2.pivot_table(index='Track', values='average').reset_index()
+gender = board2.c(index='Gender', values='average').reset_index()
+hometown = board2.pivot_table(index='Hometown', values='average').reset_index()
+```
+To assign the new data to the graph, we must first use `[name].pivot_table` of which we assign the indexes to the average column generated before. To reset the index we can also use `.reset_index()` so that the new index will start at 0
+```python
+TopTrack = track.loc[track['average'].idxmax()]
+TopGender = gender.loc[gender['average'].idxmax()]
+TopHometown = hometown.loc[hometown['average'].idxmax()
+```
+To locate the maximum average of each new dataframe we first need to use `.loc` and then use `.idxmax` to locate said maximum value after which we can assign to the a new variable name.
 
 
+```python
+graph, axes = plt.subplots(nrows=1, ncols=3, figsize=(20, 10))
+axes[0].bar(track['Track'], track['average'], color='red')
+axes[0].set(title='Mean average by Track', xlabel='Track', ylabel='Mean average')
+
+axes[1].bar(gender['Gender'], gender['average'], color='green')
+axes[1].set(title='Mean average by Gender', xlabel='Gender', ylabel='Mean average')
+
+axes[2].bar(hometown['Hometown'], hometown['average'], color='blue')
+axes[2].set(title='Mean average by Hometown', xlabel='Hometown', ylabel='Mean average')
+
+graph.text(0.35,0.02, 'Summary of Results:')
+graph.text(0.35,-0.01, 'For Mean average by Track, Communications leads with highest mean average of (67.975)')
+graph.text(0.35,-0.04, 'For Mean average by Gender, Male leads with highest mean average of (67.183333)')
+graph.text(0.35,-0.07, 'For Mean average by Hometown, Luzon leads with the highest mean average of (68.083333) ')
+```
+To generate the needed graph we must first know how many rows and columns we are going to use and configure. We can use `nrows` and `ncols` as well as `figsize` to generate the graph with the number of rows and columns with the needed size that we want. Using `axes[0].bar()` allows us to generate the bar while `axes[0].set` will "set" the bar for us such as the title and x or y labels. `Graph.Text(x,y)` will allow us to write text in the graph so that we can summarize the results without the use of comments.
 
 
+Problem C: Category-Average Visualization Function
+```python
+board2
+
+track = board2.pivot_table(index='Track', values='average').reset_index()
+gender = board2.c(index='Gender', values='average').reset_index()
+hometown = board2.pivot_table(index='Hometown', values='average').reset_index()
+
+TopTrack = track.loc[track['average'].idxmax()]
+TopGender = gender.loc[gender['average'].idxmax()]
+TopHometown = hometown.loc[hometown['average'].idxmax()
+
+graph, axes = plt.subplots(nrows=1, ncols=3, figsize=(20, 10))
+axes[0].bar(track['Track'], track['average'], color='red')
+axes[0].set(title='Mean average by Track', xlabel='Track', ylabel='Mean average')
+
+axes[1].bar(gender['Gender'], gender['average'], color='green')
+axes[1].set(title='Mean average by Gender', xlabel='Gender', ylabel='Mean average')
+
+axes[2].bar(hometown['Hometown'], hometown['average'], color='blue')
+axes[2].set(title='Mean average by Hometown', xlabel='Hometown', ylabel='Mean average')
+
+graph.text(0.35,0.02, 'Summary of Results:')
+graph.text(0.35,-0.01, 'For Mean average by Track, Communications leads with highest mean average of (67.975)')
+graph.text(0.35,-0.04, 'For Mean average by Gender, Male leads with highest mean average of (67.183333)')
+graph.text(0.35,-0.07, 'For Mean average by Hometown, Luzon leads with the highest mean average of (68.083333) ')
+
+
+```
 
 
 
 ## History 
 - September 13, 2026 - Created README.md File
 - September 16, 2026 - Uploaded PA4 Solutions
+- September 17, 2026 - Updated README.md File, Updated PA4 Solutions 
